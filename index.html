@@ -904,14 +904,14 @@
 </head>
 <body>
 
-<!-- Crisis Resources Bar -->
-<div class="crisis-resources" role="complementary" aria-label="Crisis resources">
+<!-- Crisis Resources Bar (updated by JS based on selected country) -->
+<div class="crisis-resources" id="crisis-bar" role="complementary" aria-label="Crisis resources">
   If you or someone you know is in crisis:
   <a href="tel:988">988 Suicide &amp; Crisis Lifeline</a> (US)
   <span class="separator">|</span>
   Crisis Text Line: text HOME to <a href="sms:741741">741741</a>
   <span class="separator">|</span>
-  International: <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>
+  <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>
 </div>
 
 <!-- Header -->
@@ -948,7 +948,6 @@
 
   <div class="header-utility">
     <span class="utility-link" aria-current="page" style="opacity:1;cursor:default"><span>🍀</span> Clover <span style="font-size:0.7rem;opacity:0.6;font-weight:normal">(active)</span></span>
-    <a href="https://prismatic-labs.github.io/tare/hormuz.html" class="utility-link" target="_blank" rel="noopener"><span>⚖️</span> Tare</a>
     <a href="methodology.html" class="utility-link" style="margin-left:auto"><span>📄</span> Methodology</a>
   </div>
 </header>
@@ -1053,8 +1052,7 @@
       <p>
         <a href="methodology.html">How it's calculated</a> &middot;
         Data updates weekly &middot;
-        <a href="https://prismaticlabs.ai" target="_blank" rel="noopener">Prismatic Labs</a> &middot;
-        <a href="https://prismatic-labs.github.io/tare/hormuz.html" target="_blank" rel="noopener">Tare (grocery price tool)</a>
+        <a href="https://prismaticlabs.ai" target="_blank" rel="noopener">Prismatic Labs</a>
       </p>
       <p style="margin-top:0.75rem">
         <a href="https://github.com/prismatic-labs/clover" target="_blank" rel="noopener">Open source on GitHub</a>
@@ -1089,6 +1087,63 @@ const LOCALE_MAP = {
 function detectCountry() {
   const lang = (navigator.language || 'en').toLowerCase();
   return LOCALE_MAP[lang] || LOCALE_MAP[lang.split('-')[0]] || 'US';
+}
+
+/* ─── Crisis helplines by country ────────────────────────────────────────── */
+const CRISIS_HELPLINES = {
+  US: {
+    primary: '<a href="tel:988">988 Suicide &amp; Crisis Lifeline</a> - call or text <strong>988</strong>',
+    secondary: 'Crisis Text Line: text HOME to <a href="sms:741741">741741</a>',
+  },
+  GB: {
+    primary: '<a href="tel:116123">Samaritans</a> - call <strong>116 123</strong> (free, 24/7)',
+    secondary: 'Text <strong>SHOUT</strong> to <a href="sms:85258">85258</a>',
+  },
+  DE: {
+    primary: '<a href="tel:08001110111">Telefonseelsorge</a> - <strong>0800 111 0 111</strong> (free, 24/7)',
+    secondary: 'Or <strong>0800 111 0 222</strong>',
+  },
+  FR: {
+    primary: '<a href="tel:3114">3114</a> - national suicide prevention number (free, 24/7)',
+    secondary: '<a href="tel:0145394000">SOS Amiti\u00e9</a> - 01 45 39 40 00',
+  },
+  IT: {
+    primary: '<a href="tel:800274274">Telefono Amico</a> - <strong>800 274 274</strong> (free)',
+    secondary: 'Or text via WhatsApp: 324 011 7252',
+  },
+  JP: {
+    primary: '<a href="tel:0570064556">\u3044\u306e\u3061\u306e\u96fb\u8a71</a> - <strong>0570-064-556</strong>',
+    secondary: '<a href="tel:0120783556">TELL Lifeline</a> - 03-5774-0992 (English)',
+  },
+  AU: {
+    primary: '<a href="tel:131114">Lifeline Australia</a> - call <strong>13 11 14</strong> (24/7)',
+    secondary: 'Text <strong>0477 13 11 14</strong> or <a href="tel:1300659467">Beyond Blue</a> 1300 22 4636',
+  },
+  CA: {
+    primary: '<a href="tel:9-8-8">988 Suicide Crisis Helpline</a> - call or text <strong>9-8-8</strong> (24/7)',
+    secondary: '<a href="tel:18334564566">Crisis Text Line</a> - text HOME to 741741',
+  },
+  SE: {
+    primary: '<a href="tel:90101">Mind Sj\u00e4lvmordslinjen</a> - <strong>90101</strong> (24/7)',
+    secondary: 'Chat at <a href="https://mind.se" target="_blank" rel="noopener">mind.se</a>',
+  },
+  NL: {
+    primary: '<a href="tel:113">113 Zelfmoordpreventie</a> - call <strong>113</strong> or <strong>0800-0113</strong> (free, 24/7)',
+    secondary: 'Chat at <a href="https://113.nl" target="_blank" rel="noopener">113.nl</a>',
+  },
+};
+
+function updateCrisisBar() {
+  const bar = document.getElementById('crisis-bar');
+  if (!bar) return;
+  const hl = CRISIS_HELPLINES[state.country] || CRISIS_HELPLINES.US;
+  bar.innerHTML =
+    'If you or someone you know is in crisis: ' +
+    hl.primary +
+    ' <span class="separator">|</span> ' +
+    hl.secondary +
+    ' <span class="separator">|</span> ' +
+    '<a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>';
 }
 
 /* ─── Helpers ────────────────────────────────────────────────────────────── */
@@ -1461,6 +1516,7 @@ function render() {
   renderCountrySelect();
   renderCountrySummary();
   renderGrid();
+  updateCrisisBar();
 
   // Update live date
   const dateEl = document.getElementById('live-date');
@@ -1484,6 +1540,7 @@ function bindEvents() {
   // Country select
   document.getElementById('country-select').addEventListener('change', e => {
     state.country = e.target.value;
+    updateCrisisBar();
     renderCountrySummary();
     renderGrid();
     if (state.activeStressor) openModal(state.activeStressor);
