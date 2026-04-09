@@ -2,7 +2,7 @@
 
 **The cost-of-living crisis, in your community's mental health.**
 
-A data tool that maps how economic stressors flow through to regional mental health pressure - the same way [Tare](https://github.com/prismatic-labs/tare) maps supply chain disruptions to food prices.
+A data tool that maps how economic stressors flow through to regional mental health pressure across 10 countries. Every weight and transmission pathway is grounded in published epidemiological evidence.
 
 → **[See the tool](https://prismatic-labs.github.io/clover/)**
 
@@ -144,9 +144,7 @@ Supports `data-clover-theme="dark"` for dark backgrounds. Crisis resources link 
 
 ## Why "clover"?
 
-In ecology, clover (*Trifolium*) is a **bioindicator** - its presence or absence tells you about the health of the soil. It's in the same plant family as [vetch](https://github.com/prismatic-labs/vetch) and [tare](https://github.com/prismatic-labs/tare).
-
-Vetch fixes nitrogen in the soil. Tare grows among the wheat, revealing what's hidden. Clover tells you what condition the soil is in.
+In ecology, clover (*Trifolium*) is a **bioindicator** - its presence or absence tells you about the health of the soil. It tells you what condition the soil is in.
 
 Same family, different job.
 

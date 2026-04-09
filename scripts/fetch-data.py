@@ -40,10 +40,10 @@ HISTORY_DIR = REPO_ROOT / "data" / "history"
 
 # ─── Model constants ────────────────────────────────────────────────────────
 MONTE_CARLO_RUNS    = 500   # iterations for uncertainty band
-WEIGHT_NOISE        = 0.20  # ±20% uniform noise on driver weights (wider than Tare's 15%)
+WEIGHT_NOISE        = 0.20  # ±20% uniform noise on driver weights
 BASELINE_PERIOD     = "2019-2020"
 
-# ─── Severity bands (same as Tare) ──────────────────────────────────────────
+# ─── Severity bands ─────────────────────────────────────────────────────────
 def severity_from_pct(pct: int) -> str:
     if pct >= 60: return "extreme"
     if pct >= 40: return "high"
@@ -86,7 +86,7 @@ BASELINES = {
 
 # ─── Stressor definitions ──────────────────────────────────────────────────
 # Each stressor has drivers with weights (from published evidence) and
-# a mapping to indicator keys. This mirrors Tare's food→driver→commodity structure.
+# a mapping to indicator keys.
 
 STRESSOR_CONFIGS = {
     "housing_cost_burden": {
@@ -194,7 +194,7 @@ def compute_pressure_index(
 ) -> float:
     """
     Compute the pressure index for a stressor.
-    Mirrors Tare's _weighted_exposure() calculation.
+    Compute the pressure index for a stressor from its drivers.
     """
     config = STRESSOR_CONFIGS.get(stressor_id)
     if not config:
@@ -236,7 +236,7 @@ def compute_pressure_index(
     normalised = weighted_sum / total_weight
     raw = normalised * sensitivity
 
-    # Apply local resilience floor (mirrors Tare's local_cost_floor)
+    # Apply local resilience floor
     max_pressure = 100 - floor_pct
     clamped = max(1.0, min(max_pressure, raw))
     return clamped
