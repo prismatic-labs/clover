@@ -1,0 +1,397 @@
+{
+  "last_updated": "2026-04-09",
+  "baseline_period": "2019-2020",
+  "baseline_label": "Pre-pandemic average",
+  "sources": {
+    "unemployment_rate_pct": 4.2,
+    "unemployment_baseline_pct": 3.7,
+    "rent_to_income_ratio": 0.34,
+    "rent_to_income_baseline": 0.29,
+    "mortgage_rate_30yr_pct": 6.8,
+    "mortgage_rate_baseline_pct": 3.7,
+    "cpi_all_items": 316.2,
+    "cpi_baseline": 258.8,
+    "cpi_food_energy": 328.5,
+    "cpi_food_energy_baseline": 252.1,
+    "real_wage_growth_pct": -1.2,
+    "real_wage_growth_baseline_pct": 1.5,
+    "household_debt_to_income": 1.48,
+    "household_debt_baseline": 1.35,
+    "credit_delinquency_rate_pct": 3.2,
+    "credit_delinquency_baseline_pct": 2.3,
+    "gini_index": 0.394,
+    "gini_baseline": 0.389,
+    "median_mean_wage_ratio": 0.72,
+    "median_mean_wage_baseline": 0.76,
+    "data_sources_used": [
+      "FRED (Federal Reserve Economic Data)",
+      "BLS (Bureau of Labor Statistics)",
+      "OECD Economic Outlook",
+      "Eurostat",
+      "Zillow Home Value Index",
+      "World Bank Development Indicators"
+    ],
+    "tipping_points": {
+      "housing_affordability_crisis": true,
+      "housing_affordability_threshold": 0.30,
+      "housing_current_ratio": 0.34,
+      "unemployment_stress_threshold_pct": 6.0,
+      "unemployment_stress_risk": false,
+      "unemployment_current_pct": 4.2
+    }
+  },
+  "countries": [
+    {
+      "code": "US",
+      "name": "United States",
+      "currency": "USD",
+      "safety_net_score": 0.45,
+      "mh_infrastructure_per_100k": 33.0,
+      "universal_healthcare": false,
+      "gini": 0.39,
+      "impact_multiplier": 1.2,
+      "data_confidence": "high",
+      "notes": "Employer-linked insurance means job loss compounds into healthcare loss. Weak safety net amplifies economic shocks."
+    },
+    {
+      "code": "GB",
+      "name": "United Kingdom",
+      "currency": "GBP",
+      "safety_net_score": 0.60,
+      "mh_infrastructure_per_100k": 18.0,
+      "universal_healthcare": true,
+      "gini": 0.35,
+      "impact_multiplier": 0.95,
+      "data_confidence": "high",
+      "notes": "NHS provides universal mental healthcare but wait times average 18 weeks. Housing crisis acute in London/SE."
+    },
+    {
+      "code": "DE",
+      "name": "Germany",
+      "currency": "EUR",
+      "safety_net_score": 0.72,
+      "mh_infrastructure_per_100k": 27.0,
+      "universal_healthcare": true,
+      "gini": 0.32,
+      "impact_multiplier": 0.80,
+      "data_confidence": "high",
+      "notes": "Strong social insurance system. Rental market protections buffer housing shocks."
+    },
+    {
+      "code": "FR",
+      "name": "France",
+      "currency": "EUR",
+      "safety_net_score": 0.75,
+      "mh_infrastructure_per_100k": 23.0,
+      "universal_healthcare": true,
+      "gini": 0.33,
+      "impact_multiplier": 0.75,
+      "data_confidence": "high",
+      "notes": "Generous unemployment benefits and universal healthcare substantially buffer economic shocks."
+    },
+    {
+      "code": "IT",
+      "name": "Italy",
+      "currency": "EUR",
+      "safety_net_score": 0.55,
+      "mh_infrastructure_per_100k": 10.0,
+      "universal_healthcare": true,
+      "gini": 0.35,
+      "impact_multiplier": 1.05,
+      "data_confidence": "high",
+      "notes": "Universal healthcare but low mental health service availability. Youth unemployment persistently high."
+    },
+    {
+      "code": "JP",
+      "name": "Japan",
+      "currency": "JPY",
+      "safety_net_score": 0.58,
+      "mh_infrastructure_per_100k": 16.0,
+      "universal_healthcare": true,
+      "gini": 0.33,
+      "impact_multiplier": 0.90,
+      "data_confidence": "high",
+      "notes": "Universal healthcare but mental health stigma limits access. Cultural factors moderate help-seeking."
+    },
+    {
+      "code": "AU",
+      "name": "Australia",
+      "currency": "AUD",
+      "safety_net_score": 0.62,
+      "mh_infrastructure_per_100k": 30.0,
+      "universal_healthcare": true,
+      "gini": 0.34,
+      "impact_multiplier": 0.85,
+      "data_confidence": "high",
+      "notes": "Medicare + Better Access scheme for mental health. Housing affordability crisis in Sydney/Melbourne."
+    },
+    {
+      "code": "CA",
+      "name": "Canada",
+      "currency": "CAD",
+      "safety_net_score": 0.63,
+      "mh_infrastructure_per_100k": 25.0,
+      "universal_healthcare": true,
+      "gini": 0.33,
+      "impact_multiplier": 0.85,
+      "data_confidence": "high",
+      "notes": "Universal healthcare but mental health services have long wait times. Severe housing affordability issues."
+    },
+    {
+      "code": "SE",
+      "name": "Sweden",
+      "currency": "SEK",
+      "safety_net_score": 0.82,
+      "mh_infrastructure_per_100k": 35.0,
+      "universal_healthcare": true,
+      "gini": 0.28,
+      "impact_multiplier": 0.60,
+      "data_confidence": "high",
+      "notes": "Strongest safety net in the dataset. Generous unemployment insurance and universal mental healthcare."
+    },
+    {
+      "code": "NL",
+      "name": "Netherlands",
+      "currency": "EUR",
+      "safety_net_score": 0.74,
+      "mh_infrastructure_per_100k": 31.0,
+      "universal_healthcare": true,
+      "gini": 0.30,
+      "impact_multiplier": 0.70,
+      "data_confidence": "high",
+      "notes": "Mandatory health insurance with mental health coverage. Rental market pressure increasing."
+    }
+  ],
+  "stressors": [
+    {
+      "id": "housing_cost_burden",
+      "name": "Housing Cost Burden",
+      "category": "economic",
+      "emoji": "🏠",
+      "pressure_index": 68,
+      "severity": "extreme",
+      "pressure_low": 61,
+      "pressure_high": 74,
+      "local_resilience_floor_pct": 25,
+      "drivers": [
+        {
+          "input": "Rent-to-income ratio",
+          "description": "Median rent as a share of median household income",
+          "category": "housing",
+          "change_pct": 17,
+          "weight": 0.50,
+          "source": "Zillow ZHVI / BLS / Eurostat"
+        },
+        {
+          "input": "Mortgage rate (30yr)",
+          "description": "Average 30-year fixed mortgage rate",
+          "category": "housing",
+          "change_pct": 84,
+          "weight": 0.30,
+          "source": "FRED (MORTGAGE30US)"
+        },
+        {
+          "input": "Housing supply gap",
+          "description": "New housing starts vs. household formation rate",
+          "category": "housing",
+          "change_pct": -15,
+          "weight": 0.20,
+          "source": "Census Bureau / Eurostat"
+        }
+      ],
+      "explanation": "When housing costs exceed 30% of income, households face trade-offs between rent and healthcare, food, and social participation. The WHO identifies housing cost burden as a primary social determinant of mental health. Mortgage rates nearly doubled from the 2019-2020 baseline, locking out first-time buyers and increasing rental demand.",
+      "evidence_base": "Bentley et al., 2011 (systematic review); Mason et al., 2013; WHO Social Determinants of Mental Health, 2014",
+      "mental_health_pathway": "Housing cost >30% of income → financial anxiety → sleep disruption → reduced social participation → depression/anxiety risk (OR 1.3-1.5)",
+      "effect_size": "OR 1.3-1.5 for anxiety/depression (Bentley et al., 2011)",
+      "what_helps": [
+        "Housing voucher programs reduced anxiety symptoms by 15% (Chetty, Hendren & Katz, 2016)",
+        "Rent stabilization policies reduce housing insecurity (Autor, Palmer & Pathak, 2014)",
+        "Financial counselling services reduce psychological distress from housing stress (Pleasence & Balmer, 2012)"
+      ]
+    },
+    {
+      "id": "unemployment",
+      "name": "Unemployment",
+      "category": "economic",
+      "emoji": "📉",
+      "pressure_index": 42,
+      "severity": "high",
+      "pressure_low": 36,
+      "pressure_high": 48,
+      "local_resilience_floor_pct": 30,
+      "drivers": [
+        {
+          "input": "Unemployment rate (U-3)",
+          "description": "Official unemployment rate",
+          "category": "employment",
+          "change_pct": 14,
+          "weight": 0.45,
+          "source": "BLS / Eurostat / OECD"
+        },
+        {
+          "input": "Long-term unemployment share",
+          "description": "Share of unemployed out of work >27 weeks",
+          "category": "employment",
+          "change_pct": 22,
+          "weight": 0.30,
+          "source": "BLS / OECD"
+        },
+        {
+          "input": "Underemployment rate (U-6)",
+          "description": "Includes involuntary part-time and discouraged workers",
+          "category": "employment",
+          "change_pct": 18,
+          "weight": 0.25,
+          "source": "BLS / Eurostat"
+        }
+      ],
+      "explanation": "Unemployment is the single most studied economic determinant of mental health. The relationship is causal, not just correlational: longitudinal studies show mental health deteriorates after job loss and recovers after re-employment, controlling for prior health status. Long-term unemployment (>6 months) has compounding effects.",
+      "evidence_base": "Paul & Moser, 2009 (meta-analysis, 237 studies); Clark & Oswald, 1994; Milner et al., 2013",
+      "mental_health_pathway": "Job loss → income loss + identity disruption + social isolation → depression/anxiety (d=0.51). In countries without universal healthcare, job loss also means insurance loss, compounding the effect.",
+      "effect_size": "d=0.51 for depression/anxiety (Paul & Moser, 2009 meta-analysis, N=237 studies)",
+      "what_helps": [
+        "Active labour market programmes reduce depression risk by 10-15% (Puig-Barrachina et al., 2020)",
+        "Unemployment insurance generosity moderates the mental health impact (Norström & Grönqvist, 2015)",
+        "Job search support programmes reduce psychological distress alongside unemployment duration (Liu et al., 2014)"
+      ]
+    },
+    {
+      "id": "inflation_pressure",
+      "name": "Inflation Pressure",
+      "category": "economic",
+      "emoji": "🔥",
+      "pressure_index": 55,
+      "severity": "high",
+      "pressure_low": 48,
+      "pressure_high": 62,
+      "local_resilience_floor_pct": 30,
+      "drivers": [
+        {
+          "input": "CPI (food + energy)",
+          "description": "Consumer price index for essential goods",
+          "category": "inflation",
+          "change_pct": 30,
+          "weight": 0.50,
+          "source": "BLS CPI / Eurostat HICP"
+        },
+        {
+          "input": "Real wage growth",
+          "description": "Nominal wage growth minus inflation",
+          "category": "inflation",
+          "change_pct": -180,
+          "weight": 0.35,
+          "source": "BLS / OECD"
+        },
+        {
+          "input": "Consumer sentiment index",
+          "description": "University of Michigan or equivalent consumer confidence measure",
+          "category": "inflation",
+          "change_pct": -25,
+          "weight": 0.15,
+          "source": "FRED (UMCSENT) / European Commission"
+        }
+      ],
+      "explanation": "Inflation erodes purchasing power, particularly for lower-income households who spend a larger share on food and energy. When wages don't keep pace, households face a cost-of-living squeeze that forces trade-offs between basic needs. Real wage growth turned negative in 2022 and has not fully recovered.",
+      "evidence_base": "Rohde et al., 2016; Giorgi et al., 2020; Frasquilho et al., 2016 (systematic review)",
+      "mental_health_pathway": "Inflation above wage growth → declining purchasing power → perceived financial insecurity → anxiety/stress → sleep disruption → depression (OR 1.1-1.3)",
+      "effect_size": "OR 1.1-1.3 for anxiety/depression (Rohde et al., 2016); effect concentrated in lowest income quintiles",
+      "what_helps": [
+        "Targeted cost-of-living payments reduce financial stress in lower-income households (Fetzer, 2019)",
+        "Free school meals and energy subsidies buffer essential spending pressure (Cooper & Stewart, 2013)",
+        "Financial literacy programmes reduce anxiety from economic uncertainty (Lusardi & Mitchell, 2014)"
+      ]
+    },
+    {
+      "id": "consumer_debt",
+      "name": "Consumer Debt",
+      "category": "economic",
+      "emoji": "💳",
+      "pressure_index": 48,
+      "severity": "high",
+      "pressure_low": 41,
+      "pressure_high": 55,
+      "local_resilience_floor_pct": 35,
+      "drivers": [
+        {
+          "input": "Household debt-to-income ratio",
+          "description": "Total household debt as multiple of annual disposable income",
+          "category": "debt",
+          "change_pct": 10,
+          "weight": 0.45,
+          "source": "FRED / OECD"
+        },
+        {
+          "input": "Credit card delinquency rate",
+          "description": "Share of credit card balances 90+ days past due",
+          "category": "debt",
+          "change_pct": 39,
+          "weight": 0.35,
+          "source": "FRED (DRCCLACBS) / national central banks"
+        },
+        {
+          "input": "Personal insolvency rate",
+          "description": "Bankruptcy and individual voluntary arrangement filings per capita",
+          "category": "debt",
+          "change_pct": 15,
+          "weight": 0.20,
+          "source": "US Courts / Insolvency Service (UK) / national statistics"
+        }
+      ],
+      "explanation": "Debt is a chronic stressor. Unlike unemployment (which can resolve with re-employment), debt compounds through interest and creates a persistent sense of being trapped. Credit card delinquency rates have risen significantly from the pre-pandemic baseline, indicating households are exhausting savings buffers built during the pandemic.",
+      "evidence_base": "Sweet et al., 2013 (meta-analysis); Richardson et al., 2013; Fitch et al., 2011",
+      "mental_health_pathway": "Rising debt → persistent financial worry → rumination → sleep disruption → depression/anxiety (OR 1.2-1.4). Debt-related shame compounds the effect through social withdrawal.",
+      "effect_size": "OR 1.2-1.4 for depression; OR 1.9 for suicidal ideation among those with unmanageable debt (Richardson et al., 2013)",
+      "what_helps": [
+        "Debt advice services reduce psychological distress by 50% within 12 months (Pleasence & Balmer, 2012)",
+        "Income-contingent repayment plans reduce anxiety compared to fixed repayment schedules (Chapman & Dearden, 2017)",
+        "Prohibition of aggressive debt collection practices reduces creditor-related anxiety (Drentea, 2000)"
+      ]
+    },
+    {
+      "id": "income_inequality",
+      "name": "Income Inequality",
+      "category": "economic",
+      "emoji": "⚖️",
+      "pressure_index": 35,
+      "severity": "moderate",
+      "pressure_low": 28,
+      "pressure_high": 42,
+      "local_resilience_floor_pct": 40,
+      "drivers": [
+        {
+          "input": "Gini coefficient",
+          "description": "Standard measure of income distribution inequality (0=equal, 1=unequal)",
+          "category": "inequality",
+          "change_pct": 1,
+          "weight": 0.40,
+          "source": "World Bank / OECD"
+        },
+        {
+          "input": "Median-to-mean wage ratio",
+          "description": "How far the median worker falls below the mean - measures top-skew of income",
+          "category": "inequality",
+          "change_pct": -5,
+          "weight": 0.35,
+          "source": "BLS / OECD"
+        },
+        {
+          "input": "Income share of top 10%",
+          "description": "Share of national income held by the top decile",
+          "category": "inequality",
+          "change_pct": 4,
+          "weight": 0.25,
+          "source": "World Inequality Database"
+        }
+      ],
+      "explanation": "Income inequality is a slower-moving but structurally important stressor. It operates through relative deprivation (status anxiety), reduced social cohesion, and unequal access to protective resources (healthcare, housing, green space). Its effects are population-level rather than individual, making it harder to observe in short timeframes but significant over years.",
+      "evidence_base": "Pickett & Wilkinson, 2015 (The Spirit Level); Layte, 2012; Patel et al., 2018 (Lancet Commission)",
+      "mental_health_pathway": "Rising inequality → status anxiety + reduced social trust + unequal resource access → population-level increases in anxiety, depression, and substance use (r=0.47 across OECD nations)",
+      "effect_size": "r=0.47 across OECD countries for inequality-mental illness correlation (Pickett & Wilkinson, 2015)",
+      "what_helps": [
+        "Progressive taxation reduces inequality-driven status anxiety at the population level (Wilkinson & Pickett, 2018)",
+        "Universal basic services (healthcare, education, transport) buffer the effects of income disparity (Coote & Percy, 2020)",
+        "Community wealth-building approaches strengthen local economic resilience (CLES, 2019)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clover — The cost-of-living crisis, in your community's mental health</title>
+  <meta name="description" content="An open data tool mapping how economic stressors — housing, unemployment, inflation, debt, inequality — flow through to regional mental health pressure. Evidence-based. Updated weekly.">
+  <meta name="theme-color" content="#5B4A6B">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍀</text></svg>">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Clover — The cost-of-living crisis, in your community's mental health">
+  <meta property="og:description" content="An open data tool mapping how economic stressors — housing, unemployment, inflation, debt, inequality — flow through to regional mental health pressure.">
+  <meta property="og:url" content="https://prismatic-labs.github.io/clover/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Clover by Prismatic Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Clover — The cost-of-living crisis, in your community's mental health">
+  <meta name="twitter:description" content="How economic stressors flow through to regional mental health pressure. Evidence-based. Updated weekly.">
+
+  <style>
+    /* ─── Reset & Base ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark-green:   #5B4A6B;
+      --mid-green:    #7B6B8D;
+      --cream:        #FAF7F2;
+      --cream-dark:   #F0EDE6;
+      --white:        #ffffff;
+      --text:         #2D2926;
+      --muted:        #6B6560;
+      --muted-light:  #7A7470;
+      --border:       #E0D8D0;
+
+      --extreme:      #B85A5A;
+      --high:         #C4854A;
+      --moderate:     #A08A3E;
+      --low:          #5B8A6F;
+
+      --extreme-bg:   #FDF0F0;
+      --high-bg:      #FEF4EC;
+      --moderate-bg:  #FDFAED;
+      --low-bg:       #F0F6F2;
+
+      --serif:        Georgia, 'Times New Roman', serif;
+      --sans:         -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+      --radius:       6px;
+      --shadow:       0 1px 4px rgba(0,0,0,0.08);
+      --shadow-lg:    0 4px 20px rgba(0,0,0,0.14);
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ─── Crisis Resources Bar ──────────────────────────────────────────── */
+    .crisis-resources {
+      background: #4A3F5C;
+      color: rgba(250, 247, 242, 0.9);
+      padding: 0.5rem 1.5rem;
+      font-size: 0.75rem;
+      text-align: center;
+      line-height: 1.6;
+      border-bottom: 2px solid #D4A0A0;
+    }
+    .crisis-resources a {
+      color: #E8C4C4;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .crisis-resources a:hover { color: #fff; }
+    .crisis-resources .separator {
+      display: inline-block;
+      margin: 0 0.5rem;
+      opacity: 0.4;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────────────── */
+    header {
+      background: var(--dark-green);
+      color: var(--cream);
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      color: rgba(245, 240, 232, 0.7);
+      text-decoration: none;
+    }
+    .wordmark:hover { color: var(--cream); }
+    .wordmark span { color: var(--cream); font-style: italic; }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: rgba(245, 240, 232, 0.65);
+      letter-spacing: 0.03em;
+    }
+    .pulse-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #D4A0A0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .header-headline h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 4vw, 2.1rem);
+      font-weight: normal;
+      line-height: 1.2;
+      color: var(--cream);
+      max-width: 640px;
+    }
+
+    .header-headline p {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: rgba(245, 240, 232, 0.72);
+      max-width: 560px;
+      line-height: 1.55;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .country-label {
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.65);
+    }
+
+    .country-caveat {
+      font-size: 0.72rem;
+      color: rgba(245, 240, 232, 0.55);
+      font-style: normal;
+      margin-top: 0.1rem;
+      width: 100%;
+    }
+    .country-caveat em { font-style: italic; }
+
+    #country-select {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.1);
+      color: var(--cream);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(245,240,232,0.6)'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.55rem center;
+      padding-right: 1.6rem;
+    }
+    #country-select option { background: var(--dark-green); color: var(--cream); }
+    #country-select:focus { border-color: rgba(255,255,255,0.4); }
+
+    .header-utility {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      flex-wrap: wrap;
+    }
+    .utility-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--cream);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: opacity 0.15s;
+    }
+    .utility-link:hover { opacity: 0.8; }
+    .utility-link span { opacity: 0.6; }
+
+    /* ─── Controls Bar ──────────────────────────────────────────────────── */
+    .controls-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem 0.6rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .pill:hover { border-color: var(--dark-green); color: var(--dark-green); }
+    .pill.active {
+      background: var(--dark-green);
+      border-color: var(--dark-green);
+      color: var(--cream);
+    }
+
+    .sort-select {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.35rem 0.6rem;
+      outline: none;
+      background: var(--cream);
+      color: var(--text);
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .sort-select:focus { border-color: var(--dark-green); }
+
+    /* ─── Info Callout ──────────────────────────────────────────────────── */
+    .info-callout {
+      background: var(--moderate-bg);
+      border: 1px solid var(--moderate);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .info-callout-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+      padding-top: 0.1rem;
+    }
+    .info-callout-text h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--moderate);
+      margin-bottom: 0.3rem;
+    }
+    .info-callout-text p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .info-callout-text strong { color: var(--text); }
+
+    /* ─── Grid ──────────────────────────────────────────────────────────── */
+    .main-content { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
+
+    .results-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .results-meta strong { color: var(--text); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 560px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 860px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1200px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+    /* ─── Card ──────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: #bbb5a6;
+      transform: translateY(-1px);
+    }
+    .card:focus-visible { outline: 2px solid var(--dark-green); outline-offset: 2px; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .card-emoji { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
+    .card-meta { flex: 1; min-width: 0; }
+
+    .card-name {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: normal;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .card-category {
+      font-size: 0.7rem;
+      color: var(--muted-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.1rem;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.45rem;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .badge-extreme  { background: var(--extreme-bg);  color: var(--extreme);  }
+    .badge-high     { background: var(--high-bg);     color: var(--high);     }
+    .badge-moderate { background: var(--moderate-bg);  color: var(--moderate); }
+    .badge-low      { background: var(--low-bg);       color: var(--low);     }
+
+    .exposure-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .exposure-number {
+      font-family: var(--serif);
+      font-size: 1.9rem;
+      font-weight: normal;
+      line-height: 1;
+    }
+    .severity-extreme .exposure-number { color: var(--extreme); }
+    .severity-high    .exposure-number { color: var(--high);    }
+    .severity-moderate .exposure-number { color: var(--moderate); }
+    .severity-low     .exposure-number { color: var(--low);     }
+
+    .exposure-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .exposure-band {
+      font-size: 0.62rem;
+      color: var(--muted-light);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-track {
+      height: 4px;
+      background: var(--cream-dark);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .severity-extreme .bar-fill { background: var(--extreme);  }
+    .severity-high    .bar-fill { background: var(--high);     }
+    .severity-moderate .bar-fill { background: var(--moderate); }
+    .severity-low     .bar-fill { background: var(--low);      }
+
+    .drivers-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .driver-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .driver-icon { font-size: 0.7rem; flex-shrink: 0; }
+    .driver-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .driver-pct  { font-weight: 600; color: var(--text); flex-shrink: 0; }
+
+    .card-tap-hint {
+      font-size: 0.68rem;
+      color: var(--muted-light);
+      margin-top: auto;
+      text-align: right;
+    }
+
+    /* ─── Tipping Point Flag ───────────────────────────────────────────── */
+    .tipping-flag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1px 6px 1px 5px;
+      border-radius: 3px;
+      background: #C0392B;
+      color: #fff;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+    }
+
+    /* ─── Country Summary Section ───────────────────────────────────────── */
+    .country-summary {
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .country-summary-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .country-summary-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark-green);
+    }
+    .country-summary-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .country-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .country-stat {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 0.65rem 0.75rem;
+      text-align: center;
+    }
+    .country-stat-value {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--dark-green);
+    }
+    .country-stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-light);
+      margin-top: 0.15rem;
+    }
+
+    /* ─── Empty State ───────────────────────────────────────────────────── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+    .empty-state p:first-child { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    /* ─── Modal Overlay ─────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 30, 20, 0.55);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    @media (min-width: 700px) {
+      .modal-overlay { align-items: center; }
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 10px 10px 0 0;
+      width: 100%;
+      max-width: 640px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    @media (min-width: 700px) {
+      .modal { border-radius: 10px; max-height: 88vh; }
+    }
+
+    .modal-close {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-back {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .modal-back:hover { color: var(--text); }
+
+    .share-wrap { position: relative; }
+    .modal-share-btn {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      padding: 0.35rem 0.8rem;
+      background: var(--dark-green);
+      color: var(--cream);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .modal-share-btn:hover { background: var(--mid-green); }
+
+    .share-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      min-width: 170px;
+      z-index: 200;
+      overflow: hidden;
+    }
+    .share-menu.open { display: block; }
+    .share-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 100%;
+      font-family: var(--sans);
+      transition: background 0.12s;
+    }
+    .share-item:hover { background: #f5f0e8; }
+    .share-item-icon { font-size: 1rem; line-height: 1; width: 1.2rem; text-align: center; }
+    .share-divider { height: 1px; background: #eee; margin: 0; }
+
+    .modal-body { padding: 1.25rem; }
+
+    .modal-hero {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .modal-emoji { font-size: 2.5rem; line-height: 1; flex-shrink: 0; }
+
+    .modal-title-block { flex: 1; }
+    .modal-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: normal;
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-exposure-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .modal-exposure-big {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      line-height: 1;
+      font-weight: normal;
+    }
+    .modal-exposure-label { font-size: 0.8rem; color: var(--muted); }
+
+    .modal-bar-track {
+      height: 6px;
+      background: var(--cream-dark);
+      border-radius: 3px;
+      margin: 0.6rem 0 1rem;
+      overflow: hidden;
+    }
+    .modal-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* Section titles */
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    /* Driver rows in modal */
+    .drivers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .driver-row {
+      background: var(--cream);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .driver-row > summary {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.65rem;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .driver-row > summary::-webkit-details-marker { display: none; }
+    .driver-row > summary::marker { display: none; }
+    .driver-row > summary:hover { background: var(--cream-dark); }
+    .driver-row[open] > summary { background: var(--cream-dark); }
+
+    .driver-row-icon { font-size: 1rem; flex-shrink: 0; }
+    .driver-row-name { font-size: 0.85rem; font-weight: 600; color: var(--text); flex: 1; }
+
+    .driver-row-pct {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: normal;
+      flex-shrink: 0;
+    }
+
+    .driver-row-chevron {
+      font-size: 0.65rem;
+      color: var(--muted-light);
+      flex-shrink: 0;
+      transition: transform 0.15s ease;
+      line-height: 1;
+    }
+    .driver-row[open] .driver-row-chevron { transform: rotate(90deg); }
+
+    .driver-row-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding: 0.45rem 0.65rem 0.65rem 2.4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .driver-row-source {
+      font-size: 0.7rem;
+      color: var(--muted-light);
+      text-decoration: none;
+    }
+
+    .driver-weight-bar {
+      display: inline-block;
+      height: 3px;
+      background: currentColor;
+      opacity: 0.35;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-left: 0.3rem;
+    }
+
+    /* Explanation block */
+    .explanation {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--cream);
+      border-left: 3px solid var(--dark-green);
+      padding: 0.75rem 0.9rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Evidence, pathway, effect blocks */
+    .evidence-block {
+      margin-bottom: 1.25rem;
+    }
+    .evidence-block p {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .evidence-block strong { color: var(--text); }
+
+    /* Pathway visualization */
+    .pathway-block {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.7;
+      border-left: 3px solid var(--high);
+    }
+
+    /* What helps section */
+    .what-helps-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.25rem;
+    }
+    .what-helps-list li {
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.55;
+      padding: 0.5rem 0.65rem;
+      background: var(--low-bg);
+      border-radius: var(--radius);
+      margin-bottom: 0.4rem;
+      position: relative;
+      padding-left: 1.6rem;
+    }
+    .what-helps-list li::before {
+      content: '>';
+      position: absolute;
+      left: 0.6rem;
+      color: var(--low);
+      font-weight: 700;
+    }
+
+    /* Country detail in modal */
+    .country-detail {
+      margin: 0.8rem 0 0;
+      padding: 0.65rem 0.9rem;
+      background: rgba(44, 62, 45, 0.06);
+      border-left: 3px solid rgba(44, 62, 45, 0.25);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .country-detail strong { color: var(--text); }
+
+    /* Math details */
+    .math-details { margin-top: 0.8rem; }
+    .math-details summary {
+      cursor: pointer;
+      font-size: 0.78rem;
+      color: var(--muted);
+      user-select: none;
+      list-style: none;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .math-details summary::before { content: '\25B6'; font-size: 0.6rem; }
+    .math-details[open] summary::before { content: '\25BC'; }
+    .math-details summary::-webkit-details-marker { display: none; }
+    .math-box {
+      margin-top: 0.5rem;
+      background: #f0ede6;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.72rem;
+      color: #444;
+      line-height: 1.8;
+    }
+    .math-box .math-line { display: block; }
+    .math-box .math-result { color: var(--dark-green); font-weight: bold; }
+
+    /* ─── Footer ────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--dark-green);
+      color: rgba(245, 240, 232, 0.7);
+      padding: 2rem 1.5rem;
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.5rem;
+    }
+    @media (min-width: 640px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+
+    .footer-col h2 {
+      font-family: var(--serif);
+      font-weight: normal;
+      font-size: 0.9rem;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+
+    .footer-col a { color: rgba(245, 240, 232, 0.6); }
+    .footer-col a:hover { color: var(--cream); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(245, 240, 232, 0.15);
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: rgba(245, 240, 232, 0.45);
+    }
+
+    /* ─── Loading / Error ───────────────────────────────────────────────── */
+    #loading { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 0.9rem; }
+    #error { display: none; text-align: center; padding: 3rem; color: var(--extreme); }
+
+    /* ─── Accessibility ─────────────────────────────────────────────────── */
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    a { color: inherit; }
+    button { font-family: inherit; }
+
+    /* ─── Responsive ────────────────────────────────────────────────────── */
+    @media (max-width: 560px) {
+      .crisis-resources { font-size: 0.68rem; padding: 0.4rem 1rem; }
+      .header-utility { gap: 0.75rem; }
+      .utility-link { font-size: 0.8rem; }
+      .country-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Crisis Resources Bar -->
+<div class="crisis-resources" role="complementary" aria-label="Crisis resources">
+  If you or someone you know is in crisis:
+  <a href="tel:988">988 Suicide &amp; Crisis Lifeline</a> (US)
+  <span class="separator">|</span>
+  Crisis Text Line: text HOME to <a href="sms:741741">741741</a>
+  <span class="separator">|</span>
+  International: <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-top">
+    <a href="https://prismaticlabs.ai" class="wordmark" target="_blank" rel="noopener">
+      Prismatic Labs / <span>clover</span>
+    </a>
+    <div class="live-badge" id="live-badge" aria-label="Data update indicator">
+      <div class="pulse-dot" aria-hidden="true"></div>
+      <span id="live-date">Loading...</span>
+    </div>
+  </div>
+
+  <div class="header-headline">
+    <h1>The cost-of-living crisis, in your community's mental health.</h1>
+    <p>
+      Economic stressors — housing costs, unemployment, inflation, consumer debt, income inequality —
+      don't just strain budgets. They flow through into anxiety, depression, and crisis.
+      This tool maps the evidence-based pathways from economic pressure to mental health outcomes,
+      by region.
+    </p>
+  </div>
+
+  <div class="header-controls">
+    <label for="country-select" class="country-label">Your region:</label>
+    <select id="country-select" aria-label="Select your region">
+      <!-- Populated by JS -->
+    </select>
+    <span class="country-caveat">
+      Pressure indices are modelled from OECD/World Bank data, adjusted for each country's safety net strength and mental health infrastructure.
+    </span>
+  </div>
+
+  <div class="header-utility">
+    <span class="utility-link" aria-current="page" style="opacity:1;cursor:default"><span>🍀</span> Clover <span style="font-size:0.7rem;opacity:0.6;font-weight:normal">(active)</span></span>
+    <a href="https://prismatic-labs.github.io/tare/hormuz.html" class="utility-link" target="_blank" rel="noopener"><span>⚖️</span> Tare</a>
+    <a href="methodology.html" class="utility-link" style="margin-left:auto"><span>📄</span> Methodology</a>
+  </div>
+</header>
+
+<!-- Sort / Filter Controls -->
+<div class="controls-bar" role="toolbar" aria-label="Filter and sort stressors">
+  <div class="filter-pills" role="group" aria-label="Filter by severity">
+    <button class="pill active" data-filter="all">All</button>
+    <button class="pill" data-filter="extreme">Extreme</button>
+    <button class="pill" data-filter="high">High</button>
+    <button class="pill" data-filter="moderate">Moderate</button>
+    <button class="pill" data-filter="low">Low</button>
+  </div>
+  <select class="sort-select" id="sort-select" aria-label="Sort stressors">
+    <option value="severity-desc">Highest pressure first</option>
+    <option value="severity-asc">Lowest pressure first</option>
+    <option value="alpha">Alphabetical</option>
+  </select>
+</div>
+
+<!-- Main Content -->
+<main class="main-content">
+  <div id="loading">Loading stressor data...</div>
+  <div id="error" role="alert">Failed to load data. Please refresh the page.</div>
+
+  <!-- Country Summary -->
+  <div class="country-summary" id="country-summary" style="display:none">
+    <div class="country-summary-header">
+      <span class="country-summary-title" id="country-summary-title"></span>
+      <span class="country-summary-meta" id="country-summary-meta"></span>
+    </div>
+    <div class="country-stats" id="country-stats"></div>
+  </div>
+
+  <!-- Educational Callout -->
+  <div class="info-callout" id="info-callout" style="display:none">
+    <div class="info-callout-icon" aria-hidden="true">💡</div>
+    <div class="info-callout-text">
+      <h3>Pressure, not prevalence</h3>
+      <p>
+        A <strong>55% pressure index</strong> does not mean 55% of people are affected.
+        It measures how much economic stress is bearing down on mental health systems and individuals
+        in a region, relative to a pre-pandemic baseline. Higher pressure means more people at risk,
+        longer wait times, and greater unmet need.
+      </p>
+    </div>
+  </div>
+
+  <p class="results-meta" id="results-meta" style="display:none"></p>
+  <div class="grid" id="grid" role="list" aria-label="Economic stressors"></div>
+</main>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="modal">
+    <div class="modal-close">
+      <button class="modal-back" id="modal-back-btn" aria-label="Close detail view">
+        &#8592; All stressors
+      </button>
+      <div class="share-wrap" id="share-wrap">
+        <button class="modal-share-btn" id="modal-share-btn" aria-haspopup="true" aria-expanded="false">Share &#9662;</button>
+        <div class="share-menu" id="share-menu" role="menu">
+          <a class="share-item" id="share-x" href="#" target="_blank" rel="noopener" role="menuitem">
+            <span class="share-item-icon">&#120143;</span> Post on X
+          </a>
+          <a class="share-item" id="share-linkedin" href="#" target="_blank" rel="noopener" role="menuitem">
+            <span class="share-item-icon">in</span> Share on LinkedIn
+          </a>
+          <div class="share-divider"></div>
+          <button class="share-item" id="share-copy" role="menuitem">
+            <span class="share-item-icon">&#128279;</span> <span id="share-copy-label">Copy link</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h2>About Clover</h2>
+      <p>
+        <strong style="color:rgba(245,240,232,0.9)">Clover</strong> is an open data tool mapping how economic
+        stressors flow through to regional mental health pressure. It draws on published meta-analyses, OECD economic
+        data, and WHO social determinants frameworks to quantify the pathways from cost-of-living pressures
+        to mental health outcomes.
+      </p>
+      <p style="margin-top:0.5rem">
+        Pressure indices are computed from
+        <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener">FRED</a>,
+        <a href="https://data.oecd.org/" target="_blank" rel="noopener">OECD</a>,
+        <a href="https://data.worldbank.org/" target="_blank" rel="noopener">World Bank</a>, and
+        <a href="https://www.bls.gov/" target="_blank" rel="noopener">BLS</a> data,
+        adjusted for each country's safety net strength and mental health infrastructure.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h2>Data &amp; Links</h2>
+      <p>
+        <a href="methodology.html">How it's calculated</a> &middot;
+        Data updates weekly &middot;
+        <a href="https://prismaticlabs.ai" target="_blank" rel="noopener">Prismatic Labs</a> &middot;
+        <a href="https://prismatic-labs.github.io/tare/hormuz.html" target="_blank" rel="noopener">Tare (grocery price tool)</a>
+      </p>
+      <p style="margin-top:0.75rem">
+        <a href="https://github.com/prismatic-labs/clover" target="_blank" rel="noopener">Open source on GitHub</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Data last updated: <span id="footer-date">--</span></span>
+    <span>Baseline: 2019-2020 (pre-pandemic)</span>
+    <span>Apache 2.0 License</span>
+  </div>
+</footer>
+
+<script>
+/* ─── State ──────────────────────────────────────────────────────────────── */
+const state = {
+  data: null,
+  country: 'US',
+  filter: 'all',
+  sort: 'severity-desc',
+  activeStressor: null,
+};
+
+/* ─── Locale detection ───────────────────────────────────────────────────── */
+const LOCALE_MAP = {
+  'en-us': 'US', 'en-gb': 'GB', 'en-au': 'AU', 'en-ca': 'CA',
+  'de': 'DE', 'de-at': 'DE', 'de-ch': 'DE',
+  'fr': 'FR', 'it': 'IT', 'ja': 'JP',
+  'sv': 'SE', 'nl': 'NL',
+};
+
+function detectCountry() {
+  const lang = (navigator.language || 'en').toLowerCase();
+  return LOCALE_MAP[lang] || LOCALE_MAP[lang.split('-')[0]] || 'US';
+}
+
+/* ─── Helpers ────────────────────────────────────────────────────────────── */
+function getCountry() {
+  return state.data.countries.find(c => c.code === state.country) ||
+         state.data.countries[0];
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function countryPressure(stressor, country) {
+  const raw = Math.min(99, Math.round(stressor.pressure_index * country.impact_multiplier));
+  if (country.data_confidence === 'low') return Math.min(99, Math.round(raw / 10) * 10) || 10;
+  if (country.data_confidence === 'medium') return Math.min(99, Math.round(raw / 5) * 5) || 5;
+  return raw;
+}
+
+function severityFromPct(pct) {
+  if (pct >= 60) return 'extreme';
+  if (pct >= 40) return 'high';
+  if (pct >= 20) return 'moderate';
+  return 'low';
+}
+
+function severityLabel(sev) {
+  return sev.charAt(0).toUpperCase() + sev.slice(1);
+}
+
+function severityColor(sev) {
+  const map = { extreme: 'var(--extreme)', high: 'var(--high)', moderate: 'var(--moderate)', low: 'var(--low)' };
+  return map[sev] || 'var(--muted)';
+}
+
+function driverCategoryIcon(cat) {
+  const map = {
+    housing: '🏠', employment: '💼', inflation: '🔥', debt: '💳', inequality: '⚖️',
+  };
+  return map[cat] || '📊';
+}
+
+/* ─── Country Band Pressure ──────────────────────────────────────────────── */
+function countryPressureBand(stressor, country) {
+  const low = Math.min(99, Math.round((stressor.pressure_low || stressor.pressure_index * 0.85) * country.impact_multiplier));
+  const high = Math.min(99, Math.round((stressor.pressure_high || stressor.pressure_index * 1.15) * country.impact_multiplier));
+  return { low, high };
+}
+
+/* ─── Tipping Points ────────────────────────────────────────────────────── */
+function getTippingPoints(stressor) {
+  const tp = state.data.sources?.tipping_points;
+  if (!tp) return null;
+  if (stressor.id === 'housing_cost_burden' && tp.housing_affordability_crisis) {
+    return 'CRISIS THRESHOLD';
+  }
+  if (stressor.id === 'unemployment' && tp.unemployment_stress_risk) {
+    return 'STRESS THRESHOLD';
+  }
+  return null;
+}
+
+/* ─── Render Country Select ──────────────────────────────────────────────── */
+function renderCountrySelect() {
+  const sel = document.getElementById('country-select');
+  sel.innerHTML = state.data.countries.map(c => {
+    const conf = c.data_confidence === 'low' ? ' (limited data)' : c.data_confidence === 'medium' ? ' (partial data)' : '';
+    return `<option value="${escHtml(c.code)}"${c.code === state.country ? ' selected' : ''}>${escHtml(c.name)}${conf}</option>`;
+  }).join('');
+}
+
+/* ─── Render Country Summary ─────────────────────────────────────────────── */
+function renderCountrySummary() {
+  const country = getCountry();
+  const container = document.getElementById('country-summary');
+  const title = document.getElementById('country-summary-title');
+  const meta = document.getElementById('country-summary-meta');
+  const statsEl = document.getElementById('country-stats');
+
+  title.textContent = country.name;
+  meta.textContent = `Impact multiplier: ${country.impact_multiplier}x \u00b7 Data confidence: ${country.data_confidence}`;
+
+  const avgPressure = Math.round(
+    state.data.stressors.reduce((sum, s) => sum + countryPressure(s, country), 0) / state.data.stressors.length
+  );
+  const avgSev = severityFromPct(avgPressure);
+
+  statsEl.innerHTML = `
+    <div class="country-stat">
+      <div class="country-stat-value" style="color:${severityColor(avgSev)}">${avgPressure}%</div>
+      <div class="country-stat-label">Avg. Pressure</div>
+    </div>
+    <div class="country-stat">
+      <div class="country-stat-value">${(country.safety_net_score * 100).toFixed(0)}%</div>
+      <div class="country-stat-label">Safety Net Score</div>
+    </div>
+    <div class="country-stat">
+      <div class="country-stat-value">${country.mh_infrastructure_per_100k}</div>
+      <div class="country-stat-label">MH Workers / 100k</div>
+    </div>
+    <div class="country-stat">
+      <div class="country-stat-value">${country.universal_healthcare ? 'Yes' : 'No'}</div>
+      <div class="country-stat-label">Universal Healthcare</div>
+    </div>
+  `;
+
+  container.style.display = '';
+}
+
+/* ─── Render Card ────────────────────────────────────────────────────────── */
+function renderCard(stressor, country) {
+  const adjPct = countryPressure(stressor, country);
+  const sev = severityFromPct(adjPct);
+  const band = countryPressureBand(stressor, country);
+  const tipping = getTippingPoints(stressor);
+
+  const driversHtml = stressor.drivers.slice(0, 3).map(d => `
+    <div class="driver-chip">
+      <span class="driver-icon" aria-hidden="true">${driverCategoryIcon(d.category)}</span>
+      <span class="driver-name">${escHtml(d.input)}</span>
+      <span class="driver-pct">${d.change_pct > 0 ? '+' : ''}${d.change_pct}%</span>
+    </div>
+  `).join('');
+
+  return `
+    <article class="card severity-${sev}" role="listitem" tabindex="0"
+             data-stressor="${escHtml(stressor.id)}"
+             aria-label="${escHtml(stressor.name)}, ${adjPct}% pressure, ${sev} severity">
+      <div class="card-header">
+        <span class="card-emoji" aria-hidden="true">${stressor.emoji}</span>
+        <div class="card-meta">
+          <div class="card-name">${escHtml(stressor.name)}</div>
+          <div class="card-category">${escHtml(stressor.category)}</div>
+        </div>
+        <span class="badge badge-${sev}">${severityLabel(sev)}</span>
+      </div>
+
+      <div class="exposure-row">
+        <span class="exposure-number">${adjPct}%</span>
+        <span class="exposure-label">pressure index${tipping ? ` <span class="tipping-flag">${tipping}</span>` : ''}</span>
+      </div>
+      <span class="exposure-band">${band.low}% \u2013 ${band.high}% range</span>
+
+      <div class="bar-track" aria-hidden="true">
+        <div class="bar-fill" style="width:${adjPct}%"></div>
+      </div>
+
+      <div class="drivers-preview">${driversHtml}</div>
+      <div class="card-tap-hint">tap for detail &rarr;</div>
+    </article>
+  `;
+}
+
+/* ─── Filter & Sort ──────────────────────────────────────────────────────── */
+function getFilteredStressors() {
+  const country = getCountry();
+  let stressors = [...state.data.stressors];
+
+  // Filter
+  if (state.filter !== 'all') {
+    stressors = stressors.filter(s => {
+      const pct = countryPressure(s, country);
+      return severityFromPct(pct) === state.filter;
+    });
+  }
+
+  // Sort
+  if (state.sort === 'severity-desc') {
+    stressors.sort((a, b) => countryPressure(b, country) - countryPressure(a, country));
+  } else if (state.sort === 'severity-asc') {
+    stressors.sort((a, b) => countryPressure(a, country) - countryPressure(b, country));
+  } else if (state.sort === 'alpha') {
+    stressors.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  return stressors;
+}
+
+/* ─── Render Grid ────────────────────────────────────────────────────────── */
+function renderGrid() {
+  const country = getCountry();
+  const stressors = getFilteredStressors();
+  const grid = document.getElementById('grid');
+  const meta = document.getElementById('results-meta');
+
+  if (stressors.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <p>🍀</p>
+        <p>No stressors match this filter for ${escHtml(country.name)}.</p>
+      </div>
+    `;
+    meta.style.display = 'none';
+  } else {
+    grid.innerHTML = stressors.map(s => renderCard(s, country)).join('');
+    meta.innerHTML = `Showing <strong>${stressors.length}</strong> stressor${stressors.length !== 1 ? 's' : ''} for <strong>${escHtml(country.name)}</strong>`;
+    meta.style.display = '';
+  }
+
+  // Bind card clicks
+  grid.querySelectorAll('.card').forEach(card => {
+    const handler = () => {
+      const id = card.dataset.stressor;
+      const stressor = state.data.stressors.find(s => s.id === id);
+      if (stressor) openModal(stressor);
+    };
+    card.addEventListener('click', handler);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
+  });
+}
+
+/* ─── Build Math HTML ────────────────────────────────────────────────────── */
+function buildMathHtml(stressor, country) {
+  const basePct = stressor.pressure_index;
+  const adjPct = countryPressure(stressor, country);
+  const mult = country.impact_multiplier;
+
+  const driverLines = stressor.drivers.map(d => {
+    const wPct = d.weight != null ? `w=${(d.weight * 100).toFixed(0)}%` : '';
+    return `<span class="math-line">  ${escHtml(d.input).padEnd(28)} ${d.change_pct > 0 ? '+' : ''}${String(d.change_pct).padStart(4)}%  ${wPct.padEnd(6)}  (${d.category})</span>`;
+  }).join('');
+
+  return `
+    <details class="math-details">
+      <summary>View the math</summary>
+      <div class="math-box" aria-label="Calculation details">
+        <span class="math-line">── Drivers (weighted) ──────────────────</span>
+        ${driverLines}
+        <span class="math-line"> </span>
+        <span class="math-line">Base pressure index  = ${basePct}%  (global baseline)</span>
+        <span class="math-line">Country multiplier   = ${mult}\u00d7  (${escHtml(country.name)})</span>
+        <span class="math-line">Raw adjusted         = min(99, round(${basePct} \u00d7 ${mult})) = ${Math.min(99, Math.round(basePct * mult))}%</span>
+        ${country.data_confidence !== 'high' ? `<span class="math-line">Confidence rounding  = ${country.data_confidence} \u2192 ${adjPct}%</span>` : ''}
+        <span class="math-result math-line">Final pressure       = ${adjPct}%${country.data_confidence !== 'high' ? ' *' : ''}</span>
+        ${country.data_confidence !== 'high' ? `<span class="math-line" style="opacity:0.6">  * rounded for ${country.data_confidence} confidence data</span>` : ''}
+      </div>
+    </details>`;
+}
+
+/* ─── Build Country Tooltip ──────────────────────────────────────────────── */
+function buildCountryTooltip(country) {
+  if (country.impact_multiplier === 1.0) return '';
+
+  const mult = country.impact_multiplier;
+  const dir = mult > 1 ? 'above' : 'below';
+  const pctDiff = Math.abs(Math.round((mult - 1) * 100));
+
+  return `
+    <div class="country-detail" role="note">
+      <strong>${escHtml(country.name)}</strong> has an impact multiplier of <strong>${mult}\u00d7</strong> \u2014 ${pctDiff}% ${dir} global baseline.
+      <br>Safety net score: <strong>${(country.safety_net_score * 100).toFixed(0)}%</strong> &middot;
+      MH workers per 100k: <strong>${country.mh_infrastructure_per_100k}</strong> &middot;
+      Universal healthcare: <strong>${country.universal_healthcare ? 'Yes' : 'No'}</strong>
+      ${country.notes ? `<br><em style="font-size:0.72rem">${escHtml(country.notes)}</em>` : ''}
+    </div>`;
+}
+
+/* ─── Open Modal ─────────────────────────────────────────────────────────── */
+function openModal(stressor) {
+  state.activeStressor = stressor;
+  const country = getCountry();
+  const adjPct = countryPressure(stressor, country);
+  const sev = severityFromPct(adjPct);
+  const band = countryPressureBand(stressor, country);
+  const tipping = getTippingPoints(stressor);
+
+  const driversHtml = stressor.drivers.map(d => {
+    const icon = driverCategoryIcon(d.category);
+    const weightBar = d.weight != null ? `<span class="driver-weight-bar" style="width:${Math.round(d.weight * 60)}px"></span>` : '';
+    return `
+      <details class="driver-row">
+        <summary>
+          <span class="driver-row-icon">${icon}</span>
+          <span class="driver-row-name">${escHtml(d.input)} ${weightBar}</span>
+          <span class="driver-row-pct" style="color:${d.change_pct > 15 ? 'var(--high)' : d.change_pct > 0 ? 'var(--moderate)' : 'var(--low)'}">${d.change_pct > 0 ? '+' : ''}${d.change_pct}%</span>
+          <span class="driver-row-chevron">\u25B6</span>
+        </summary>
+        <div class="driver-row-desc">
+          <span>${escHtml(d.description)}</span>
+          ${d.weight != null ? `<span style="font-size:0.7rem;color:var(--muted-light)">Weight: ${(d.weight * 100).toFixed(0)}%</span>` : ''}
+          <span class="driver-row-source">${escHtml(d.source)}</span>
+        </div>
+      </details>
+    `;
+  }).join('');
+
+  const whatHelpsHtml = (stressor.what_helps || []).map(h =>
+    `<li>${escHtml(h)}</li>`
+  ).join('');
+
+  const body = document.getElementById('modal-body');
+  body.innerHTML = `
+    <div class="modal-hero">
+      <span class="modal-emoji">${stressor.emoji}</span>
+      <div class="modal-title-block">
+        <h2 class="modal-title" id="modal-title">${escHtml(stressor.name)}</h2>
+        <span class="badge badge-${sev}" style="display:inline-block">${severityLabel(sev)}${tipping ? ` \u2014 ${tipping}` : ''}</span>
+        <div class="modal-exposure-row">
+          <span class="modal-exposure-big" style="color:${severityColor(sev)}">${adjPct}%</span>
+          <span class="modal-exposure-label">pressure index for ${escHtml(country.name)}</span>
+        </div>
+        <span class="exposure-band">${band.low}% \u2013 ${band.high}% estimated range</span>
+      </div>
+    </div>
+
+    <div class="modal-bar-track">
+      <div class="modal-bar-fill" style="width:${adjPct}%;background:${severityColor(sev)}"></div>
+    </div>
+
+    ${buildCountryTooltip(country)}
+
+    <div style="margin-top:1.25rem">
+      <h3 class="section-title">What's Driving This</h3>
+      <div class="drivers-list">${driversHtml}</div>
+    </div>
+
+    <h3 class="section-title">Explanation</h3>
+    <div class="explanation">${escHtml(stressor.explanation)}</div>
+
+    <h3 class="section-title">Mental Health Pathway</h3>
+    <div class="pathway-block">${escHtml(stressor.mental_health_pathway)}</div>
+
+    <div class="evidence-block">
+      <h3 class="section-title">Evidence Base</h3>
+      <p>${escHtml(stressor.evidence_base)}</p>
+    </div>
+
+    <div class="evidence-block">
+      <h3 class="section-title">Effect Size</h3>
+      <p><strong>${escHtml(stressor.effect_size)}</strong></p>
+    </div>
+
+    ${whatHelpsHtml.length > 0 ? `
+      <h3 class="section-title">What Helps</h3>
+      <ul class="what-helps-list">${whatHelpsHtml}</ul>
+    ` : ''}
+
+    ${buildMathHtml(stressor, country)}
+  `;
+
+  // Update share links
+  const shareText = `${stressor.name}: ${adjPct}% mental health pressure in ${country.name}. See the evidence:`;
+  const shareUrl = `${window.location.origin}${window.location.pathname}#${stressor.id}`;
+  const encodedText = encodeURIComponent(shareText);
+  const encodedUrl = encodeURIComponent(shareUrl);
+
+  document.getElementById('share-x').href = `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+  document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Scroll modal to top
+  document.getElementById('modal').scrollTop = 0;
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  state.activeStressor = null;
+
+  // Close share menu if open
+  document.getElementById('share-menu').classList.remove('open');
+}
+
+/* ─── Full Render ────────────────────────────────────────────────────────── */
+function render() {
+  renderCountrySelect();
+  renderCountrySummary();
+  renderGrid();
+
+  // Update live date
+  const dateEl = document.getElementById('live-date');
+  const footerDate = document.getElementById('footer-date');
+  if (state.data.last_updated) {
+    const d = new Date(state.data.last_updated + 'T00:00:00');
+    const formatted = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    dateEl.textContent = `Updated ${formatted}`;
+    footerDate.textContent = formatted;
+  } else {
+    dateEl.textContent = 'Live';
+    footerDate.textContent = '--';
+  }
+
+  // Show elements
+  document.getElementById('info-callout').style.display = '';
+}
+
+/* ─── Event Binding ──────────────────────────────────────────────────────── */
+function bindEvents() {
+  // Country select
+  document.getElementById('country-select').addEventListener('change', e => {
+    state.country = e.target.value;
+    renderCountrySummary();
+    renderGrid();
+    if (state.activeStressor) openModal(state.activeStressor);
+  });
+
+  // Filter pills
+  document.querySelectorAll('.filter-pills .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      state.filter = pill.dataset.filter;
+      renderGrid();
+    });
+  });
+
+  // Sort
+  document.getElementById('sort-select').addEventListener('change', e => {
+    state.sort = e.target.value;
+    renderGrid();
+  });
+
+  // Modal close
+  document.getElementById('modal-back-btn').addEventListener('click', closeModal);
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  // Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Share menu
+  document.getElementById('modal-share-btn').addEventListener('click', () => {
+    const menu = document.getElementById('share-menu');
+    const isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open');
+    document.getElementById('modal-share-btn').setAttribute('aria-expanded', !isOpen);
+  });
+
+  // Copy link
+  document.getElementById('share-copy').addEventListener('click', async () => {
+    const stressor = state.activeStressor;
+    if (!stressor) return;
+    const url = `${window.location.origin}${window.location.pathname}#${stressor.id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      const label = document.getElementById('share-copy-label');
+      label.textContent = 'Copied!';
+      setTimeout(() => { label.textContent = 'Copy link'; }, 2000);
+    } catch {
+      // Fallback
+    }
+  });
+
+  // Close share menu on outside click
+  document.addEventListener('click', e => {
+    const wrap = document.getElementById('share-wrap');
+    if (!wrap.contains(e.target)) {
+      document.getElementById('share-menu').classList.remove('open');
+    }
+  });
+
+  // Handle hash navigation
+  function checkHash() {
+    const hash = window.location.hash.slice(1);
+    if (hash && state.data) {
+      const stressor = state.data.stressors.find(s => s.id === hash);
+      if (stressor) openModal(stressor);
+    }
+  }
+  window.addEventListener('hashchange', checkHash);
+  // Check on load (deferred to after data loads)
+  return checkHash;
+}
+
+/* ─── Init ───────────────────────────────────────────────────────────────── */
+async function init() {
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+
+  try {
+    const resp = await fetch('data/stressors.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    state.data = await resp.json();
+  } catch (err) {
+    loadingEl.style.display = 'none';
+    errorEl.style.display = '';
+    errorEl.textContent = `Failed to load data: ${err.message}. Please refresh the page.`;
+    console.error('Clover: failed to load stressor data', err);
+    return;
+  }
+
+  // Auto-detect country
+  const detected = detectCountry();
+  if (state.data.countries.some(c => c.code === detected)) {
+    state.country = detected;
+  }
+
+  loadingEl.style.display = 'none';
+  const checkHash = bindEvents();
+  render();
+  checkHash();
+}
+
+init();
+</script>
+</body>
+</html>
