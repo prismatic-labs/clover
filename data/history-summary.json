@@ -1,26 +1,32 @@
 {
   "dates": [
     "2026-04-13",
-    "2026-04-20"
+    "2026-04-20",
+    "2026-04-27"
   ],
   "history": {
     "housing_cost_burden": [
+      49,
       49,
       49
     ],
     "unemployment": [
       15,
+      15,
       15
     ],
     "inflation_pressure": [
+      32,
       32,
       32
     ],
     "consumer_debt": [
       42,
+      42,
       42
     ],
     "income_inequality": [
+      1,
       1,
       1
     ]
