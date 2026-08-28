@@ -1,0 +1,7 @@
+# Pinned to the exact set from the last known-green run of update-data.yml
+# (run 31364557713, 2026-08-10). Regenerate deliberately, not incidentally.
+certifi==2026.7.22
+charset-normalizer==3.4.9
+idna==3.18
+requests==2.34.2
+urllib3==2.7.0
