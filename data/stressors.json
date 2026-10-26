@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-19",
+  "last_updated": "2026-10-26",
   "baseline_period": "2019-2020",
   "baseline_label": "Pre-pandemic average",
   "sources": {
@@ -170,7 +170,7 @@
       "emoji": "🏠",
       "pressure_index": 49,
       "severity": "high",
-      "pressure_low": 44,
+      "pressure_low": 45,
       "pressure_high": 53,
       "local_resilience_floor_pct": 25,
       "drivers": [
